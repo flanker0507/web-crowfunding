@@ -9,7 +9,7 @@ import (
 
 type Campaign struct {
 	ID               int
-	userID           int
+	UserID           int
 	Name             string
 	ShortDescription string
 	Description      string
@@ -21,12 +21,17 @@ type Campaign struct {
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	CampaignImages   []CampaignImages
-	User             user.User
+	User             user.User `gorm:"foreignKey:UserID"`
 }
 
 func (c Campaign) GoalAmountFormatIDR() string {
 	ac := accounting.Accounting{Symbol: "Rp", Precision: 2, Thousand: ".", Decimal: ","}
 	return ac.FormatMoney(c.GoalAmount)
+}
+
+func (c Campaign) CurrentAmountFormatIDR() string { // Perbaiki nama fungsi ini
+	ac := accounting.Accounting{Symbol: "Rp", Precision: 2, Thousand: ".", Decimal: ","}
+	return ac.FormatMoney(c.CurrentAmount) // Perbaiki field yang digunakan di sini
 }
 
 type CampaignImages struct {

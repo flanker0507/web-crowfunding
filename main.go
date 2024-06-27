@@ -14,6 +14,7 @@ import (
 	"web-crowfunding/campaign"
 	"web-crowfunding/handler"
 	"web-crowfunding/helper"
+	"web-crowfunding/transaction"
 	"web-crowfunding/user"
 )
 
@@ -28,15 +29,19 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	campaignRepository := campaign.NewRepository(db)
+	transactionRepository := transaction.NewRepository(db)
 
 	userService := user.NewService(userRepository)
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
+	transactinService := transaction.NewService(transactionRepository, campaignRepository)
 
 	userHandler := handler.NewUserHandler(userService, authService)
 	campaignHandler := handler.NewCampaignHandler(campaignService)
+	transactionHandler := handler.NewTransactionHandler(transactinService)
 
 	router := gin.Default()
+	router.Static("images", "./images")
 	api := router.Group("/api/v1")
 
 	api.POST("/users", userHandler.RegisterUser)
@@ -49,6 +54,8 @@ func main() {
 	api.POST("/campaigns", authMiddleware(authService, userService), campaignHandler.CreateCampaign)
 	api.PUT("/campaigns/:id", authMiddleware(authService, userService), campaignHandler.UpdateCampaign)
 	api.POST("/campaign-images", authMiddleware(authService, userService), campaignHandler.UploadImage)
+
+	api.GET("/campaigns/:id/transactions", authMiddleware(authService, userService), transactionHandler.GetCampaignsTransactions)
 
 	router.Run()
 

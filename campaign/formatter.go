@@ -16,7 +16,7 @@ type CampaignFormatter struct {
 func FormatCampaign(campaign Campaign) CampaignFormatter {
 	campaignFormatter := CampaignFormatter{}
 	campaignFormatter.ID = campaign.ID
-	campaignFormatter.UserID = campaign.userID
+	campaignFormatter.UserID = campaign.UserID
 	campaignFormatter.Name = campaign.Name
 	campaignFormatter.ShortDescription = campaign.ShortDescription
 	campaignFormatter.GoalAmount = campaign.GoalAmount
@@ -76,7 +76,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	campaignDetailFormatter.GoalAmount = campaign.GoalAmount
 	campaignDetailFormatter.CurrentAmount = campaign.CurrentAmount
 	campaignDetailFormatter.BackerCount = campaign.BackerCount
-	campaignDetailFormatter.UserID = campaign.userID
+	campaignDetailFormatter.UserID = campaign.UserID
 	campaignDetailFormatter.Slug = campaign.Slug
 	campaignDetailFormatter.ImageURL = ""
 

@@ -55,7 +55,7 @@ func (s *service) CreateCampaign(input CreateCampaignInput) (Campaign, error) {
 	campaign.Description = input.Description
 	campaign.Perks = input.Perks
 	campaign.GoalAmount = input.GoalAmount
-	campaign.userID = input.User.ID
+	campaign.UserID = input.User.ID
 
 	slugCandidate := fmt.Sprintf("%s %d", input.Name, input.User.ID)
 	campaign.Slug = slug.Make(slugCandidate)
@@ -72,7 +72,7 @@ func (s *service) UpdateCampaign(inputID GetCampaignDetailInput, inputData Creat
 	if err != nil {
 		return campaign, err
 	}
-	if campaign.userID != inputData.User.ID {
+	if campaign.UserID != inputData.User.ID {
 		return campaign, errors.New("Not an owner of the campaign")
 	}
 	campaign.Name = inputData.Name
@@ -96,7 +96,7 @@ func (s *service) SaveCampaignImage(input CreateCampaignImageInput, fileLocation
 		return CampaignImages{}, err
 	}
 
-	if campaign.userID != input.User.ID {
+	if campaign.UserID != input.User.ID {
 		return CampaignImages{}, errors.New("Not an owner of the campaign")
 	}
 
