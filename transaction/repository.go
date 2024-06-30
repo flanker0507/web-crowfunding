@@ -21,7 +21,7 @@ func NewRepository(db *gorm.DB) *repository {
 func (r *repository) GetByCampaignID(campaignID int) ([]Transaction, error) {
 	var transaction []Transaction
 
-	err := r.db.Preload("User").Where("campaign_id = ?", campaignID).Order("id desc").Find(&transaction).Error
+	err := r.db.Debug().Preload("User").Where("campaign_id = ?", campaignID).Order("id desc").Find(&transaction).Error
 	if err != nil {
 		return transaction, err
 	}
@@ -32,7 +32,7 @@ func (r *repository) GetByCampaignID(campaignID int) ([]Transaction, error) {
 func (r *repository) GetByUserID(userID int) ([]Transaction, error) {
 	var transaction []Transaction
 
-	err := r.db.Preload("Campaign.CampaignImages", "campaign_images.is_primary = 1").Where("user_id = 1", userID).Order("id desc").Find(&transaction).Error
+	err := r.db.Debug().Preload("Campaign.CampaignImages", "campaign_images.is_primary = 1").Where("user_id = ?", userID).Order("id desc").Find(&transaction).Error
 	if err != nil {
 		return transaction, err
 	}
@@ -42,7 +42,7 @@ func (r *repository) GetByUserID(userID int) ([]Transaction, error) {
 func (r *repository) GetByID(ID int) (Transaction, error) {
 	var transaction Transaction
 
-	err := r.db.Where("id = ?", ID).Find(&transaction).Error
+	err := r.db.Debug().Where("id = ?", ID).Find(&transaction).Error
 
 	if err != nil {
 		return transaction, err
@@ -52,7 +52,7 @@ func (r *repository) GetByID(ID int) (Transaction, error) {
 }
 
 func (r *repository) Update(tranaction Transaction) (Transaction, error) {
-	err := r.db.Save(&tranaction).Error
+	err := r.db.Debug().Save(&tranaction).Error
 	if err != nil {
 		return tranaction, err
 	}
@@ -62,7 +62,7 @@ func (r *repository) Update(tranaction Transaction) (Transaction, error) {
 func (r *repository) FindAll() ([]Transaction, error) {
 	var transaction []Transaction
 
-	err := r.db.Preload("Campaign").Order("id desc").Find(&transaction).Error
+	err := r.db.Debug().Preload("Campaign").Order("id desc").Find(&transaction).Error
 	if err != nil {
 		return transaction, err
 	}

@@ -15,8 +15,8 @@ type Transaction struct {
 	Status     string
 	Code       string
 	PaymentURL string
-	User       user.User         `gorm:"foreignkey:UserID"`
-	Campaign   campaign.Campaign `gorm:"foreignkey:CampaignID"`
+	User       user.User
+	Campaign   campaign.Campaign
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
